@@ -85,3 +85,24 @@ button.pill { cursor: pointer }
 .pill.new { background: rgba(242, 183, 5, .2); color: var(--accent) }
 .pill.done { background: rgba(92, 197, 138, .18); color: var(--ok) }
 .empty { color: var(--muted); padding: 18px 4px }
+
+/* Language toggle */
+.lang { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; align-self: center }
+.lang button { font: inherit; font-size: 14px; font-weight: 600; padding: 7px 13px; min-width: 46px; background: transparent; color: var(--muted); border: none; cursor: pointer }
+.lang button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent) }
+
+/* Autofill */
+.readbar { padding: 11px 14px; font-size: 15px; border-top: 1px solid var(--line); background: var(--surface) }
+.readbar.reading { color: var(--accent) }
+.readbar.done { color: var(--ok) }
+.readbar.fail { color: var(--muted) }
+.autotag { margin-left: 8px; font-size: 12px; font-weight: 600; color: var(--ok); background: rgba(92, 197, 138, .15); padding: 2px 8px; border-radius: 999px }
+.auto input, .auto select { border-color: rgba(92, 197, 138, .55) }
+.loading input, .loading select {
+  color: transparent;
+  background: linear-gradient(90deg, var(--surface) 0%, var(--raised) 50%, var(--surface) 100%) 0 0 / 200% 100%;
+  animation: shimmer 1.2s linear infinite;
+}
+.loading input::placeholder { color: transparent }
+@keyframes shimmer { to { background-position: -200% 0 } }
+@media (prefers-reduced-motion: reduce) { .loading input, .loading select { animation: none; background: var(--raised) } }

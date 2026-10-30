@@ -37,6 +37,19 @@ Send the crew the link. Each person opens it once and adds it to their home scre
 
 After that it opens full screen with its own icon, just like a regular app.
 
+## Spanish
+The crew screen has an EN / ES switch in the top corner. It starts in Spanish on phones set
+to Spanish, and remembers the choice. Categories are saved in English either way, so office
+reports and the CSV stay consistent.
+
+## Autofill
+After a photo is taken, the phone reads the receipt itself (Tesseract, in `src/ocr.js`) and
+fills in what it can find: total, date, and for known vendors the vendor name and category.
+It's free and needs no API key. Filled fields get a green "from photo" tag; anything the
+person already typed is never overwritten. The first read on each phone downloads the
+reading engine (a few MB), then it's cached. To recognize more vendors, add them to the
+`VENDORS` list in `src/ocr.js`.
+
 ## Using it
 - **Crew:** tap the camera button, snap the receipt, and enter the total, vendor and job.
   Their name and last job are remembered on that phone.
