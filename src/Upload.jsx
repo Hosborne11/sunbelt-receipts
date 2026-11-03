@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { supabase, BUCKET, TABLE } from './supabase'
 import { prepareFile, money, shortDate, store } from './image'
 import { readReceipt } from './ocr'
-import { strings, defaultLang, CATEGORIES } from './i18n'
+import { strings, defaultLang, CATEGORIES, DEPARTMENTS } from './i18n'
 
 const todayISO = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10) }
 
@@ -20,6 +20,7 @@ export default function Upload() {
   const [job, setJob] = useState(store.get('lastJob', ''))
   const [category, setCategory] = useState('Materials')
   const [note, setNote] = useState('')
+  const [dept, setDept] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [toast, setToast] = useState('')
@@ -47,7 +48,7 @@ export default function Upload() {
   function resetForm() {
     touched.current = {}
     setAuto({})
-    setAmount(''); setVendor(''); setNote(''); setDate(todayISO()); setCategory('Materials')
+    setAmount(''); setVendor(''); setNote(''); setDept(''); setDate(todayISO()); setCategory('Materials')
   }
 
   async function choose(f) {
@@ -99,6 +100,7 @@ export default function Upload() {
     if (!name.trim()) return setError(t.errName)
     if (!(amt > 0)) return setError(t.errTotal)
     if (!vendor.trim()) return setError(t.errVendor)
+    if (category === 'Materials' && !dept) return setError(t.errDept)
     if (!navigator.onLine) return setError(t.errOffline)
 
     setBusy(true); setError('')
@@ -110,7 +112,8 @@ export default function Upload() {
       if (up.error) throw up.error
       const row = {
         submitted_by: name.trim(), amount: Math.round(amt * 100) / 100, vendor: vendor.trim(),
-        receipt_date: date || null, job: job.trim() || null, category, note: note.trim() || null,
+        receipt_date: date || null, job: job.trim() || null, category,
+        department: category === 'Materials' ? dept : 'N/A', note: note.trim() || null,
         file_path: path, file_type: type,
       }
       const ins = await supabase.from(TABLE).insert(row)
@@ -192,6 +195,17 @@ export default function Upload() {
           <select id="category" value={category} onChange={edit('category', setCategory)}>
             {CATEGORIES.map((c) => <option key={c} value={c}>{catLabel(c)}</option>)}
           </select>
+        </div>
+        <div>
+          <label htmlFor="dept">{t.dept}{category === 'Materials' && <> <span className="req">*</span></>}</label>
+          {category === 'Materials' ? (
+            <select id="dept" value={dept} onChange={(e) => setDept(e.target.value)}>
+              <option value="" disabled>{t.deptPick}</option>
+              {DEPARTMENTS.map((d) => <option key={d} value={d}>{t.depts[d] || d}</option>)}
+            </select>
+          ) : (
+            <select id="dept" value="N/A" disabled><option value="N/A">{t.deptNA}</option></select>
+          )}
         </div>
         <div>
           <label htmlFor="note">{t.note}</label>

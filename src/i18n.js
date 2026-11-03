@@ -1,6 +1,7 @@
 // Crew screen text in English and Spanish. Category values are saved in English
 // so office reports stay consistent; only the labels change.
 export const CATEGORIES = ['Materials', 'Fuel', 'Tools & supplies', 'Equipment rental', 'Repairs & parts', 'Meals', 'Lodging', 'Other']
+export const DEPARTMENTS = ['Site work', 'Pipe work', 'Surveying']
 
 const en = {
   title: 'Receipts',
@@ -14,7 +15,10 @@ const en = {
   readFail: 'Couldn’t read everything on this receipt. Fill in the details below.',
   total: 'Total', date: 'Date', vendor: 'Where from', vendorPh: 'e.g. Ferguson, Home Depot, QT',
   job: 'Job', jobPh: 'Job name or number', category: 'What was it for',
-  note: 'Note', notePh: 'Anything the office should know',
+  note: 'Notes / project phase', notePh: 'e.g. Phase 2 waterline, anything the office should know',
+  dept: 'Department', deptPick: 'Choose…', deptNA: 'N/A (not materials)',
+  errDept: 'Pick a department for materials: site work, pipe work or surveying.',
+  depts: {},
   name: 'Your name', namePh: 'First and last',
   upload: 'Upload receipt', uploading: 'Uploading…', uploaded: 'Receipt uploaded',
   sentTitle: 'Sent from this phone', sentEmpty: 'Nothing sent yet. Receipts you upload show up here.', sent: 'Sent',
@@ -42,7 +46,10 @@ const es = {
   readFail: 'No se pudo leer todo el recibo. Llene los datos abajo.',
   total: 'Total', date: 'Fecha', vendor: 'Dónde se compró', vendorPh: 'Ej.: Ferguson, Home Depot, QT',
   job: 'Obra', jobPh: 'Nombre o número de la obra', category: 'Para qué fue',
-  note: 'Nota', notePh: 'Algo que la oficina deba saber',
+  note: 'Notas / fase del proyecto', notePh: 'Ej.: Fase 2 línea de agua, algo que la oficina deba saber',
+  dept: 'Departamento', deptPick: 'Elegir…', deptNA: 'N/A (no son materiales)',
+  errDept: 'Elija un departamento para materiales: trabajo de sitio, tubería o topografía.',
+  depts: { 'Site work': 'Trabajo de sitio', 'Pipe work': 'Tubería', 'Surveying': 'Topografía' },
   name: 'Su nombre', namePh: 'Nombre y apellido',
   upload: 'Enviar recibo', uploading: 'Enviando…', uploaded: 'Recibo enviado',
   sentTitle: 'Enviados desde este teléfono', sentEmpty: 'Todavía no ha enviado nada. Los recibos que envíe aparecen aquí.', sent: 'Enviado',

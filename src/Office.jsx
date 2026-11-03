@@ -89,16 +89,16 @@ function Queue({ session }) {
     const term = q.trim().toLowerCase()
     return rows.filter((r) =>
       (filter === 'all' || (filter === 'new' ? r.status !== 'entered' : r.status === 'entered')) &&
-      (!term || [r.vendor, r.job, r.submitted_by, r.category, r.note].some((v) => v && v.toLowerCase().includes(term)))
+      (!term || [r.vendor, r.job, r.submitted_by, r.category, r.department, r.note].some((v) => v && v.toLowerCase().includes(term)))
     )
   }, [rows, filter, q])
 
   const total = shown.reduce((s, r) => s + Number(r.amount), 0)
 
   function exportCsv() {
-    const head = ['Date', 'Vendor', 'Amount', 'Job', 'Category', 'Submitted by', 'Note', 'Status', 'Uploaded']
+    const head = ['Date', 'Vendor', 'Amount', 'Job', 'Category', 'Department', 'Submitted by', 'Notes / phase', 'Status', 'Uploaded']
     const esc = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`
-    const lines = shown.map((r) => [r.receipt_date, r.vendor, r.amount, r.job, r.category, r.submitted_by, r.note, r.status, r.created_at].map(esc).join(','))
+    const lines = shown.map((r) => [r.receipt_date, r.vendor, r.amount, r.job, r.category, r.department, r.submitted_by, r.note, r.status, r.created_at].map(esc).join(','))
     const blob = new Blob([[head.join(','), ...lines].join('\n')], { type: 'text/csv' })
     const a = document.createElement('a')
     a.href = URL.createObjectURL(blob)
@@ -144,7 +144,7 @@ function Queue({ session }) {
               </a>
               <div className="meta">
                 <div className="top"><span className="amt">{money(r.amount)}</span><span className="vendor">{r.vendor}</span></div>
-                <div className="sub">{[shortDate(r.receipt_date), r.job, r.category, r.submitted_by].filter(Boolean).join(', ')}</div>
+                <div className="sub">{[shortDate(r.receipt_date), r.job, r.category, r.department && r.department !== 'N/A' ? r.department : null, r.submitted_by].filter(Boolean).join(', ')}</div>
                 {r.note && <div className="sub">{r.note}</div>}
               </div>
               <button type="button" className={'pill ' + (r.status === 'entered' ? 'done' : 'new')} onClick={() => toggle(r)}>
